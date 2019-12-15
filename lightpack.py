@@ -20,15 +20,15 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
     vol.Optional(CONF_API_KEY): cv.string
 })
 
-def setup_platform(hass, config, add_devices, discovery_info=None):
-    # Assign configuration variables. The configuration check takes care they are present. 
+def setup_platform(hass, config, add_entities, discovery_info=None):
+    # Assign configuration variables. The configuration check takes care they are present.
     host = config.get(CONF_HOST)
     port = config.get(CONF_PORT)
     api_key = config.get(CONF_API_KEY)
 
     # Add device
     lightpack = Lightpack(host, port, api_key)
-    add_devices([lightpack])
+    add_entities([lightpack])
 
     def set_profile(call):
         """Instruct the light to change profile."""
@@ -104,7 +104,7 @@ class Lightpack(Light):
             _LOGGER.error('Command "%s" failed with exception: %s', command, repr(error))
             self._state = False
             return None
-            
+
     def update(self):
         """Periodically check to see if the light is on."""
         self._state = self.is_on
