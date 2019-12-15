@@ -21,7 +21,7 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
 })
 
 def setup_platform(hass, config, add_devices, discovery_info=None):
-    # Assign configuration variables. The configuration check takes care they are present. 
+    # Assign configuration variables. The configuration check takes care they are present.
     host = config.get(CONF_HOST)
     port = config.get(CONF_PORT)
     api_key = config.get(CONF_API_KEY)
@@ -92,7 +92,7 @@ class Lightpack(Light):
                 if (profile != None):
                     telnet.read_until(b"\n", timeout=0.2)
                     telnet.write(("setprofile:" + profile + "\n").encode('ascii'))
-                    _LOGGER.error('lightpack profile set to : ' + profile)
+                    _LOGGER.info('lightpack profile set to : ' + profile)
             else:
                 telnet.write(("setstatus:off\n").encode('ascii'))
             telnet.read_until(b"\n", timeout=0.2)
@@ -104,7 +104,7 @@ class Lightpack(Light):
             _LOGGER.error('Command "%s" failed with exception: %s', command, repr(error))
             self._state = False
             return None
-            
+
     def update(self):
         """Periodically check to see if the light is on."""
         self._state = self.is_on
